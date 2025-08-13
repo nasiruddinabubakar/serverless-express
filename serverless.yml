@@ -1,0 +1,68 @@
+service: serverless-express-resources
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${env:AWS_REGION, 'us-east-1'}
+  stage: ${env:STAGE, 'dev'}
+  timeout: 20
+  memorySize: 256
+  environment:
+    STAGE: ${env:STAGE, 'dev'}
+
+plugins:
+  - serverless-offline
+
+functions:
+  users:
+    handler: src/users/handler.handler
+    events:
+      - httpApi:
+          method: ANY
+          path: /users
+      - httpApi:
+          method: ANY
+          path: /users/{id}
+  connections:
+    handler: src/connections/handler.handler
+    events:
+      - httpApi:
+          method: ANY
+          path: /connections
+      - httpApi:
+          method: ANY
+          path: /connections/{id}
+  dataTables:
+    handler: src/data-tables/handler.handler
+    events:
+      - httpApi:
+          method: ANY
+          path: /data-tables
+      - httpApi:
+          method: ANY
+          path: /data-tables/{id}
+  transformations:
+    handler: src/transformations/handler.handler
+    events:
+      - httpApi:
+          method: ANY
+          path: /transformations
+      - httpApi:
+          method: ANY
+          path: /transformations/{id}
+      - httpApi:
+          method: POST
+          path: /transformations/run
+  pipelines:
+    handler: src/pipelines/handler.handler
+    events:
+      - httpApi:
+          method: ANY
+          path: /pipelines
+      - httpApi:
+          method: ANY
+          path: /pipelines/{id}
+      - httpApi:
+          method: POST
+          path: /pipelines/start
