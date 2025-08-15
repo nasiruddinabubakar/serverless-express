@@ -1,4 +1,4 @@
-const db = require('../db/mockDb');
+const db = require('../db/database');
 
 class BaseRepository {
   constructor(table) { this.table = table; }

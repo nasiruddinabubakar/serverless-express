@@ -8,7 +8,7 @@ class CustomDataController {
   async getAllCustomDataTypes(req, res) {
     try {
       const data = await this.service.getAllCustomDataTypes();
-      res.json({ success: true, data });
+      res.status(200).json({ success: true, data });
     } catch (e) {
       res.status(500).json({ 
         success: false, 

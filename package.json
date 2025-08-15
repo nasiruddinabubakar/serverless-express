@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "commonjs",
   "scripts": {
-    "dev": "STAGE=dev serverless offline",
+    "dev": "serverless offline",
     "deploy:dev": "STAGE=dev serverless deploy",
     "deploy:staging": "STAGE=staging serverless deploy",
     "deploy:prod": "STAGE=prod serverless deploy"

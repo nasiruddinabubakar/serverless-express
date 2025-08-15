@@ -1,6 +1,6 @@
 // Simple database service for backward compatibility
 // Individual repositories should import models directly
-const { User, CustomData, CustomDataField, CustomDataValue } = require('./models');
+const { User, CustomData, CustomDataField, CustomDataValue } = require('./models/index');
 
 module.exports = {
   User,
