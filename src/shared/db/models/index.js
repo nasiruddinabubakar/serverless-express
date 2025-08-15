@@ -2,9 +2,11 @@ const { sequelize } = require('../config');
 
 // Import all models
 const User = require('./User');
+const Connection = require('./Connection');
 const CustomData = require('./CustomData');
 const CustomDataField = require('./CustomDataField');
 const CustomDataValue = require('./CustomDataValue');
+const ConnectionReport = require('./ConnectionReport');
 
 // Define associations
 CustomData.hasMany(CustomDataField, {
@@ -43,10 +45,24 @@ CustomDataValue.belongsTo(CustomDataField, {
   as: 'customField'
 });
 
+Connection.hasMany(ConnectionReport, {
+  foreignKey: 'connection_id',
+  as: 'reports',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+ConnectionReport.belongsTo(Connection, {
+  foreignKey: 'connection_id',
+  as: 'connection'
+});
+
+
 module.exports = {
   sequelize,
   User,
+  Connection,
   CustomData,
   CustomDataField,
-  CustomDataValue
+  CustomDataValue,
+  ConnectionReport
 };

@@ -1,73 +1,21 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const path = require('path');
 
-// Sequelize CLI configuration
-const config = {
-  development: {
-    username: process.env.DB_USER || 'local',
-    password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_NAME || 'comp360-sc',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    logging: console.log,
-    define: {
-      timestamps: true,
-      underscored: true,
-      freezeTableName: true,
-    },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
-  },
-  test: {
-    username: process.env.DB_USER || 'local',
-    password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_NAME || 'comp360-sc',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    logging: false,
-    define: {
-      timestamps: true,
-      underscored: true,
-      freezeTableName: true,
-    },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
-  },
-  production: {
-    username: process.env.DB_USER || 'local',
-    password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_NAME || 'comp360-sc',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    logging: false,
-    define: {
-      timestamps: true,
-      underscored: true,
-      freezeTableName: true,
-    },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
-  }
-};
+// Load config.json
+const configPath = path.resolve(__dirname, 'config', 'config.json');
+const configs = require(configPath);
 
-// Create sequelize instance for the current environment
+// Determine current environment
 const env = process.env.NODE_ENV || 'development';
-const sequelize = new Sequelize(config[env]);
+const currentConfig = configs[env];
 
-module.exports = config;
+// Create Sequelize instance using the config.json values
+const sequelize = new Sequelize(
+  currentConfig.database,
+  currentConfig.username,
+  currentConfig.password,
+  currentConfig
+);
+
+module.exports = currentConfig;
 module.exports.sequelize = sequelize;

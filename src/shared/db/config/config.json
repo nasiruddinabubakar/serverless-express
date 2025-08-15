@@ -1,0 +1,62 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "king",
+    "database": "comp360-sc",
+    "host": "localhost",
+    "port": 5433,
+    "dialect": "postgres",
+    "logging": false,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "freezeTableName": true
+    },
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "test": {
+    "username": "postgres",
+    "password": "king",
+    "database": "comp360-sc",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "freezeTableName": true
+    },
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production": {
+    "username": "postgres",
+    "password": "king",
+    "database": "comp360-sc",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "freezeTableName": true
+    },
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  }
+}
