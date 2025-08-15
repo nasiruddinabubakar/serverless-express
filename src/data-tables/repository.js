@@ -1,6 +1,7 @@
-const { CustomData, CustomDataField, CustomDataValue } = require('../shared/db/models');
+const { CustomData, CustomDataField, CustomDataValue } = require('../shared/db/models/index');
+const BaseRepository = require('../shared/repositories/BaseRepository');
 
-class CustomDataRepository {
+class CustomDataRepository extends BaseRepository {
   async createCustomData(customData) {
     return await CustomData.create(customData);
   }

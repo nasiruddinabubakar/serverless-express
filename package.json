@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "type": "commonjs",
   "scripts": {
-    "dev": "STAGE=dev serverless offline",
+    "dev": "serverless offline",
     "deploy:dev": "STAGE=dev serverless deploy",
     "deploy:staging": "STAGE=staging serverless deploy",
     "deploy:prod": "STAGE=prod serverless deploy"
   },
   "dependencies": {
+    "axios": "^1.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsforce": "^1.11.0",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",

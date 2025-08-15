@@ -12,7 +12,9 @@ class GenericService {
     if (!item) throw new Error(`${this.table} item not found`);
     return item;
   }
-  async list() { return this.repo.list(); }
+  async list() {
+    console.log("table in service",this.repo);
+    return this.repo.list(); }
   async update(id, patch) {
     const updated = await this.repo.update(id, { ...patch, updatedAt: new Date().toISOString() });
     if (!updated) throw new Error(`${this.table} item not found`);

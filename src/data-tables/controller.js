@@ -3,12 +3,18 @@ const CustomDataService = require('./service');
 class CustomDataController {
   constructor() {
     this.service = new CustomDataService();
+      // Bind all methods automatically
+    Object.getOwnPropertyNames(Object.getPrototypeOf(this))
+      .filter(prop => typeof this[prop] === 'function')
+      .forEach(method => {
+        this[method] = this[method].bind(this);
+      });
   }
 
   async getAllCustomDataTypes(req, res) {
     try {
       const data = await this.service.getAllCustomDataTypes();
-      res.json({ success: true, data });
+      res.status(200).json({ success: true, data });
     } catch (e) {
       res.status(500).json({ 
         success: false, 
@@ -192,4 +198,4 @@ class CustomDataController {
   }
 }
 
-module.exports = CustomDataController;
+module.exports = new CustomDataController();

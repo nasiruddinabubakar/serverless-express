@@ -1,4 +1,4 @@
-const { sequelize, User, CustomData, CustomDataField, CustomDataValue } = require('./models');
+const { sequelize, User, CustomData, CustomDataField, CustomDataValue } = require('./models/index');
 
 const initializeDatabase = async () => {
   try {
