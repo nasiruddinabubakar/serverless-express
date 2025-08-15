@@ -32,8 +32,8 @@ module.exports = {
     // Create custom_data table
     await queryInterface.createTable('custom_data', {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false,
       },
@@ -54,13 +54,13 @@ module.exports = {
     // Create custom_data_fields table
     await queryInterface.createTable('custom_data_fields', {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false,
       },
       custom_data_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'custom_data',
@@ -109,8 +109,8 @@ module.exports = {
     // Create custom_data_values table
     await queryInterface.createTable('custom_data_values', {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false,
       },
@@ -123,7 +123,7 @@ module.exports = {
         allowNull: false,
       },
       custom_data_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'custom_data',
@@ -133,7 +133,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       custom_field_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'custom_data_fields',

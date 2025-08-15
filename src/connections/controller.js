@@ -24,14 +24,10 @@ class ConnectionController {
   
   async list(req, res) { 
     try {
-      const { username, type } = req.query;
-      if (username) {
-        const connections = await this.service.getConnectionsByUser(username, type);
-        res.json({ success: true, data: connections });
-      } else {
+     
         const connections = await this.service.list();
         res.json({ success: true, data: connections });
-      }
+      
     } catch (e) {
       res.status(400).json({ success: false, error: { msg: e.message } });
     }
@@ -39,7 +35,7 @@ class ConnectionController {
   
   async getById(req, res) {
     try { 
-      const connection = await this.service.getConnectionById(req.params.id);
+      const connection = await this.service.getById(req.params.id);
       res.json({ success: true, data: connection }); 
     }
     catch (e) { res.status(404).json({ success: false, error: { msg: e.message } }); }

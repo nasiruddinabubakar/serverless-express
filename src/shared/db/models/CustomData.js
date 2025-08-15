@@ -3,8 +3,8 @@ const { sequelize } = require('../config');
 
 const CustomData = sequelize.define('CustomData', {
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
     allowNull: false,
   },

@@ -7,8 +7,8 @@ const router = Router();
 
 router.get('/', ctrl.getAllCustomDataTypes);
 router.get('/:id', ctrl.getCustomDataTypeById);
-// router.post('/', ctrl.createCustomDataType.bind(ctrl));
-// router.put('/:id', ctrl.updateCustomDataType.bind(ctrl));
-// router.delete('/:id', ctrl.deleteCustomDataType.bind(ctrl));
+router.post('/', ctrl.createCustomDataType);
+router.put('/:id', ctrl.updateCustomDataType);
+router.delete('/:id', ctrl.deleteCustomDataType);
 
 module.exports = router;

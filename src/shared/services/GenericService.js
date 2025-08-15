@@ -8,8 +8,9 @@ class GenericService {
     return this.repo.insert(item);
   }
   async getById(id) {
+    console.log("id in service",id,this.repo);
     const item = await this.repo.get(id);
-    if (!item) throw new Error(`${this.table} item not found`);
+    if (!item) throw new Error(` item not found`);
     return item;
   }
   async list() {
@@ -17,12 +18,12 @@ class GenericService {
     return this.repo.list(); }
   async update(id, patch) {
     const updated = await this.repo.update(id, { ...patch, updatedAt: new Date().toISOString() });
-    if (!updated) throw new Error(`${this.table} item not found`);
+    if (!updated) throw new Error(` item not found`);
     return updated;
   }
   async remove(id) {
     const ok = await this.repo.remove(id);
-    if (!ok) throw new Error(`${this.table} item not found`);
+    if (!ok) throw new Error(` item not found`);
     return true;
   }
 }
