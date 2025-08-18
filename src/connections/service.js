@@ -86,9 +86,9 @@ class ConnectionService extends GenericService {
         return await IntegrationService.getConnectionsByUser(username, type);
     }
 
-    async getConnectionById(connectionId) {
-        return await IntegrationService.getConnectionById(connectionId);
-    }
+    // async getConnectionById(connectionId) {
+    //     return await this.repo.getById(connectionId);
+    // }
 
     async checkConnectionStatus(connectionId) {
         try {

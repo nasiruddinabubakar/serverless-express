@@ -3,7 +3,8 @@ const express = require('express');
 // Creates an express app with sensible defaults
 function makeApp() {
   const app = express();
-  app.use(express.json({ limit: '1mb' }));
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
   // Basic CORS
   app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

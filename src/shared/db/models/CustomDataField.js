@@ -3,13 +3,13 @@ const { sequelize } = require('../config');
 
 const CustomDataField = sequelize.define('CustomDataField', {
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
     allowNull: false,
   },
   custom_data_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     allowNull: false,
     references: {
       model: 'custom_data',

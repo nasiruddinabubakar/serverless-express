@@ -1,19 +1,11 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config');
 
-const CustomDataValue = sequelize.define('CustomDataValue', {
+const CustomDataRow = sequelize.define('CustomDataRow', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    allowNull: false,
-  },
-  value: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  uuid: {
-    type: DataTypes.UUID,
     allowNull: false,
   },
   custom_data_id: {
@@ -24,18 +16,14 @@ const CustomDataValue = sequelize.define('CustomDataValue', {
       key: 'id',
     },
   },
-  custom_field_id: {
-    type: DataTypes.UUID,
+  row_data: {
+    type: DataTypes.JSONB,
     allowNull: false,
-    references: {
-      model: 'custom_data_fields',
-      key: 'id',
-    },
-  }
+  },
 }, {
-  tableName: 'custom_data_values',
+  tableName: 'custom_data_rows',
   timestamps: true,
   underscored: true,
 });
 
-module.exports = CustomDataValue;
+module.exports = CustomDataRow;

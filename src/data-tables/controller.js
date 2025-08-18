@@ -41,7 +41,8 @@ class CustomDataController {
 
   async getCustomDataTypeById(req, res) {
     try {
-      const data = await this.service.getCustomDataTypeById(req.params.id);
+      console.log("id in controller",req.params.id);
+      const data = await this.service.getById(req.params.id);
       res.json({ success: true, data });
     } catch (e) {
       res.status(404).json({ 
@@ -53,7 +54,7 @@ class CustomDataController {
 
   async updateCustomDataType(req, res) {
     try {
-      const data = await this.service.updateCustomDataType(req.params.id, req.body || {});
+      const data = await this.service.update(req.params.id, req.body || {});
       res.json({ success: true, data });
     } catch (e) {
       res.status(404).json({ 
@@ -193,6 +194,34 @@ class CustomDataController {
       res.status(404).json({ 
         success: false, 
         error: { msg: e.message } 
+      });
+    }
+  }
+
+  // CSV upload endpoint
+  async uploadCsvData(req, res) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          error: { msg: 'No CSV file uploaded' }
+        });
+      }
+
+      const customDataId = req.params.id;
+      const csvBuffer = req.file.buffer;
+      
+      const result = await this.service.processCsvUpload(customDataId, csvBuffer);
+      
+      res.status(200).json({
+        success: true,
+        message: 'CSV data uploaded and processed successfully',
+        data: result
+      });
+    } catch (e) {
+      res.status(400).json({
+        success: false,
+        error: { msg: e.message }
       });
     }
   }
