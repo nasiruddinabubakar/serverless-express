@@ -132,20 +132,20 @@ class CustomDataRepository extends BaseRepository {
         id: row.id,
         created_at: row.created_at,
         updated_at: row.updated_at,
-        fields: {}
+        // fields: {}                                   //only return key and value, no need to create nested objects
       };
 
       // Map each field ID in row_data to its corresponding field name
       for (const [fieldId, value] of Object.entries(row.row_data)) {
         const fieldInfo = fieldMap[fieldId];
         if (fieldInfo) {
-          transformedRow.fields[fieldInfo.name] = {
-            value: value,
-            field_type: fieldInfo.field_type,
-            is_required: fieldInfo.is_required,
-            key_field: fieldInfo.key_field,
-            filter: fieldInfo.filter
-          };
+          transformedRow[fieldInfo.name] = value
+          //   value: value,
+          //   field_type: fieldInfo.field_type,
+          //   is_required: fieldInfo.is_required,
+          //   key_field: fieldInfo.key_field,
+          //   filter: fieldInfo.filter
+          // };
         }
       }
 
