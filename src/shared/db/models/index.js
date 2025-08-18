@@ -7,6 +7,7 @@ const CustomData = require('./CustomData');
 const CustomDataField = require('./CustomDataField');
 const CustomDataValue = require('./CustomDataValue');
 const ConnectionReport = require('./ConnectionReport');
+const CustomDataRow = require('./CustomDataRow');
 
 // Define associations
 CustomData.hasMany(CustomDataField, {
@@ -45,6 +46,17 @@ CustomDataValue.belongsTo(CustomDataField, {
   as: 'customField'
 });
 
+CustomData.hasMany(CustomDataRow, {
+  foreignKey: 'custom_data_id',
+  as: 'rows',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+CustomDataRow.belongsTo(CustomData, {
+  foreignKey: 'custom_data_id',
+  as: 'customData'
+});
+
 Connection.hasMany(ConnectionReport, {
   foreignKey: 'connection_id',
   as: 'reports',
@@ -64,5 +76,6 @@ module.exports = {
   CustomData,
   CustomDataField,
   CustomDataValue,
+  CustomDataRow,
   ConnectionReport
 };

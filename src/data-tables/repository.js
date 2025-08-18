@@ -1,5 +1,8 @@
-const { CustomData, CustomDataField, CustomDataValue } = require('../shared/db/models/index');
+const { CustomData, CustomDataField, CustomDataValue, CustomDataRow } = require('../shared/db/models/index');
 const BaseRepository = require('../shared/repositories/BaseRepository');
+const csv = require('csv-parser');
+const { randomUUID } = require('crypto');
+const { Console } = require('console');
 
 class CustomDataRepository extends BaseRepository {
   async createCustomData(customData) {
@@ -60,9 +63,6 @@ class CustomDataRepository extends BaseRepository {
   async getFieldsByCustomDataId(customDataId) {
     return await CustomDataField.findAll({
       where: { custom_data_id: customDataId },
-      include: [
-        { model: CustomDataValue, as: 'values' }
-      ]
     });
   }
 
@@ -122,6 +122,112 @@ class CustomDataRepository extends BaseRepository {
     if (!value) return false;
     await value.destroy();
     return true;
+  }
+
+  // CSV processing method
+  async processCsvData(customDataId, csvBuffer, fields) {
+    return new Promise((resolve, reject) => {
+      const results = [];
+      const errors = [];
+      let rowsProcessed = 0;
+      let rowsStored = 0;
+
+      // Create a readable stream from the buffer
+      const stream = require('stream');
+      const readableStream = new stream.Readable();
+      readableStream.push(csvBuffer);
+      readableStream.push(null);
+
+      readableStream
+        .pipe(csv())
+        .on('data', (row) => {
+          rowsProcessed++;
+          results.push(row);
+        })
+        .on('end', async () => {
+          try {
+            // Process and store the data
+            const storedRows = await this.storeCsvRows(customDataId, results, fields);
+            rowsStored = storedRows.length;
+            
+            resolve({
+              rowsProcessed,
+              rowsStored,
+              errors
+            });
+          } catch (error) {
+            reject(error);
+          }
+        })
+        .on('error', (error) => {
+          reject(error);
+        });
+    });
+  }
+
+  // Store CSV rows in CustomDataRow table
+  async storeCsvRows(customDataId, rows, fields) {
+    const storedRows = [];
+  
+    // Build a map of CSV column -> fieldId
+    // Example: { product_id: "uuid-123", product_name: "uuid-456" }
+    const fieldMap = {};
+    for (const field of fields) {
+      fieldMap[field.name] = field.id; 
+      // field.name is the CSV column name
+      // field.id is your stable internal ID
+    }
+  
+    for (const row of rows) {
+      try {
+        const rowData = {};
+  
+        // For each column in the row
+        for (const [columnName, value] of Object.entries(row)) {
+          const fieldId = fieldMap[columnName]; // Find the matching fieldId
+          if (fieldId) {
+            rowData[fieldId] = value; // Store under ID, not name
+          }
+        }
+  
+        // Save row with ID-based keys
+        const customDataRow = await CustomDataRow.create({
+          custom_data_id: customDataId,
+          row_data: rowData
+        });
+  
+        storedRows.push(customDataRow);
+      } catch (error) {
+        console.error(`Error storing row:`, error);
+      }
+    }
+  
+    return storedRows;
+  }
+  
+  
+
+  // Convert CSV string values to appropriate data types
+  convertDataType(value, fieldType) {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    switch (fieldType.toUpperCase()) {
+      case 'INTEGER':
+        return parseInt(value, 10);
+      case 'DECIMAL':
+      case 'FLOAT':
+        return parseFloat(value);
+      case 'BOOLEAN':
+        return value.toLowerCase() === 'true' || value === '1';
+      case 'DATE':
+        return new Date(value).toISOString();
+      case 'STRING':
+      case 'TEXT':
+      default:
+        return value.toString();
+    }
   }
 }
 

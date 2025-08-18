@@ -10,6 +10,10 @@ provider:
   memorySize: 256
   environment:
     STAGE: ${env:STAGE, 'dev'}
+  httpApi:
+    cors: true
+    binaryMediaTypes:
+      - '*/*'
 
 plugins:
   - serverless-offline
@@ -47,6 +51,12 @@ functions:
       - httpApi:
           method: ANY
           path: /data-tables/{id}
+      - httpApi:
+          method: POST
+          path: /data-tables/{id}/upload-csv
+      - httpApi:
+          method: GET
+          path: /data-tables/{id}/rows
   transformations:
     handler: src/transformations/handler.handler
     events:

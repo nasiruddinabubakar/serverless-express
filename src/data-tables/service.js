@@ -141,6 +141,35 @@ class CustomDataService extends GenericService {
     }
     return { message: 'Custom data value deleted successfully' };
   }
+
+  // CSV processing method
+  async processCsvUpload(customDataId, csvBuffer) {
+    try {
+      // Get the custom data type and its fields
+      const customData = await this.repository.getCustomDataById(customDataId);
+      if (!customData) {
+        throw new Error('Custom data type not found');
+      }
+
+      const fields = await this.repository.getFieldsByCustomDataId(customDataId);
+      if (!fields || fields.length === 0) {
+        throw new Error('No fields defined for this custom data type');
+      }
+
+      // Process CSV and store data
+      const result = await this.repository.processCsvData(customDataId, csvBuffer, fields);
+      
+      return {
+        custom_data_id: customDataId,
+        custom_data_name: customData.name,
+        rows_processed: result.rowsProcessed,
+        rows_stored: result.rowsStored,
+        errors: result.errors
+      };
+    } catch (error) {
+      throw new Error(`CSV processing failed: ${error.message}`);
+    }
+  }
 }
 
 module.exports = CustomDataService;
