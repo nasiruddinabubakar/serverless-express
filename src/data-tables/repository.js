@@ -4,7 +4,7 @@ const csv = require('csv-parser');
 const { randomUUID } = require('crypto');
 const { Console } = require('console');
 
-class CustomDataRepository extends BaseRepository {
+class CustomDataRepository{
   async createCustomData(customData) {
     return await CustomData.create(customData);
   }

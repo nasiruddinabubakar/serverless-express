@@ -1,9 +1,10 @@
 const CustomDataRepository = require('./repository');
 const GenericService = require('../shared/services/GenericService');
+const { CustomData } = require('../shared/db/models/index');
 
 class CustomDataService extends GenericService {
   constructor() {
-    super('custom_data');
+    super(CustomData);
     this.repository = new CustomDataRepository();
   }
 
