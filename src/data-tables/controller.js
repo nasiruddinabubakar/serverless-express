@@ -162,6 +162,18 @@ class CustomDataController {
     }
   }
 
+  async getRowsByCustomDataTypeId(req, res) {
+    try {
+      const data = await this.service.getRowsByCustomDataTypeId(req.params.id);
+      res.json({ success: true, data });
+    } catch (e) {
+      res.status(404).json({ 
+        success: false, 
+        error: { msg: e.message } 
+      });
+    }
+  }
+
   async getValuesByUuid(req, res) {
     try {
       const values = await this.service.getValuesByUuid(req.params.uuid);

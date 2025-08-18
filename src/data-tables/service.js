@@ -122,6 +122,16 @@ class CustomDataService extends GenericService {
     return await this.repository.getValuesByCustomDataId(customDataId);
   }
 
+  async getRowsByCustomDataTypeId(customDataId) {
+    // Verify the custom data type exists
+    const customData = await this.repository.getCustomDataById(customDataId);
+    if (!customData) {
+      throw new Error('Custom data type not found');
+    }
+
+    return await this.repository.getRowsByCustomDataId(customDataId);
+  }
+
   async getValuesByUuid(uuid) {
     return await this.repository.getValuesByUuid(uuid);
   }

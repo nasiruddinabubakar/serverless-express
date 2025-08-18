@@ -101,6 +101,72 @@ class CustomDataRepository extends BaseRepository {
     });
   }
 
+  async getRowsByCustomDataId(customDataId) {
+    // Get all rows for the custom data type
+    const rows = await CustomDataRow.findAll({
+      where: { custom_data_id: customDataId },
+      order: [['created_at', 'ASC']]
+    });
+
+    // Get all fields for the custom data type to map IDs to names
+    const fields = await CustomDataField.findAll({
+      where: { custom_data_id: customDataId },
+      attributes: ['id', 'name', 'field_type', 'is_required', 'key_field', 'filter']
+    });
+
+    // Create a map of field ID to field info
+    const fieldMap = {};
+    fields.forEach(field => {
+      fieldMap[field.id] = {
+        name: field.name,
+        field_type: field.field_type,
+        is_required: field.is_required,
+        key_field: field.key_field,
+        filter: field.filter
+      };
+    });
+
+    // Transform rows to map field IDs to field names
+    const transformedRows = rows.map(row => {
+      const transformedRow = {
+        id: row.id,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        fields: {}
+      };
+
+      // Map each field ID in row_data to its corresponding field name
+      for (const [fieldId, value] of Object.entries(row.row_data)) {
+        const fieldInfo = fieldMap[fieldId];
+        if (fieldInfo) {
+          transformedRow.fields[fieldInfo.name] = {
+            value: value,
+            field_type: fieldInfo.field_type,
+            is_required: fieldInfo.is_required,
+            key_field: fieldInfo.key_field,
+            filter: fieldInfo.filter
+          };
+        }
+      }
+
+      return transformedRow;
+    });
+
+    return {
+      custom_data_id: customDataId,
+      total_rows: transformedRows.length,
+      fields: fields.map(field => ({
+        id: field.id,
+        name: field.name,
+        field_type: field.field_type,
+        is_required: field.is_required,
+        key_field: field.key_field,
+        filter: field.filter
+      })),
+      rows: transformedRows
+    };
+  }
+
   async getValuesByUuid(uuid) {
     return await CustomDataValue.findAll({
       where: { uuid },
