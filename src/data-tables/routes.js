@@ -29,12 +29,11 @@ router.get('/:id', ctrl.getCustomDataTypeById);
 router.post('/', ctrl.createCustomDataType);
 router.put('/:id', ctrl.updateCustomDataType);
 router.delete('/:id', ctrl.deleteCustomDataType);
+router.post('/upload-csv/:id', upload.single('csvFile'), ctrl.uploadCsvData);
+router.get('/rows/:id', ctrl.getRowsByCustomDataTypeId);
+
 
 // CSV upload route
-router.post('/:id/upload-csv', upload.single('csvFile'), ctrl.uploadCsvData);
-
-// Get CSV data rows
-router.get('/:id/rows', ctrl.getValuesByCustomDataTypeId);
 
 // Error handling middleware for multer
 router.use((error, req, res, next) => {

@@ -1,9 +1,10 @@
 const CustomDataRepository = require('./repository');
 const GenericService = require('../shared/services/GenericService');
+const { CustomData } = require('../shared/db/models/index');
 
 class CustomDataService extends GenericService {
   constructor() {
-    super('custom_data');
+    super(CustomData);
     this.repository = new CustomDataRepository();
   }
 
@@ -120,6 +121,16 @@ class CustomDataService extends GenericService {
 
   async getValuesByCustomDataTypeId(customDataId) {
     return await this.repository.getValuesByCustomDataId(customDataId);
+  }
+
+  async getRowsByCustomDataTypeId(customDataId) {
+    // Verify the custom data type exists
+    const customData = await this.repository.getCustomDataById(customDataId);
+    if (!customData) {
+      throw new Error('Custom data type not found');
+    }
+
+    return await this.repository.getRowsByCustomDataId(customDataId);
   }
 
   async getValuesByUuid(uuid) {

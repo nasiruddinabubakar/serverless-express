@@ -53,10 +53,10 @@ functions:
           path: /data-tables/{id}
       - httpApi:
           method: POST
-          path: /data-tables/{id}/upload-csv
+          path: /data-tables/upload-csv/{id}
       - httpApi:
           method: GET
-          path: /data-tables/{id}/rows
+          path: /data-tables/rows/{id}
   transformations:
     handler: src/transformations/handler.handler
     events:
