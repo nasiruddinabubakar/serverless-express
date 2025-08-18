@@ -8,9 +8,9 @@ const API_ENDPOINT = '/data-tables';
 async function testGetMappedRows(customDataId) {
   try {
     console.log('🚀 Testing get mapped rows API...');
-    console.log('📡 Endpoint:', `${BASE_URL}${API_ENDPOINT}/${customDataId}/rows`);
+    console.log('📡 Endpoint:', `${BASE_URL}${API_ENDPOINT}/rows/${customDataId}`);
     
-    const response = await axios.get(`${BASE_URL}${API_ENDPOINT}/${customDataId}/rows`, {
+    const response = await axios.get(`${BASE_URL}${API_ENDPOINT}/rows/${customDataId}`, {
       headers: {
         'Accept': 'application/json'
       },

@@ -29,8 +29,8 @@ router.get('/:id', ctrl.getCustomDataTypeById);
 router.post('/', ctrl.createCustomDataType);
 router.put('/:id', ctrl.updateCustomDataType);
 router.delete('/:id', ctrl.deleteCustomDataType);
-router.post('/:id/upload-csv', upload.single('csvFile'), ctrl.uploadCsvData);
-router.get('/:id/rows', ctrl.getRowsByCustomDataTypeId);
+router.post('/upload-csv/:id', upload.single('csvFile'), ctrl.uploadCsvData);
+router.get('/rows/:id', ctrl.getRowsByCustomDataTypeId);
 
 
 // CSV upload route
