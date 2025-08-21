@@ -1,7 +1,9 @@
 const express = require('express');
+const dotenv = require('dotenv');
 
 // Creates an express app with sensible defaults
 function makeApp() {
+  dotenv.config();
   const app = express();
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));

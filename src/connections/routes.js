@@ -11,12 +11,12 @@ router.put('/:id', ctrl.update);
 router.delete('/:id', ctrl.remove);
 
 // Salesforce OAuth endpoints
-router.post('/salesforce/initiate-login', ctrl.initiateSalesforceLogin);
-router.post('/salesforce/callback', ctrl.handleSalesforceCallback);
+router.get('/salesforce/initiate-login', ctrl.initiateSalesforceLogin);
+router.get('/salesforce/callback', ctrl.handleSalesforceCallback);
 router.post('/salesforce/callback-nextjs', ctrl.handleSalesforceCallbackFromNextJS);
 
 // Connection status check
-router.get('/:connectionId/status', ctrl.checkConnectionStatus);
+router.get('/:connectionId/salesforce/status', ctrl.checkConnectionStatus);
 
 // Salesforce report endpoints
 router.get('/:connectionId/salesforce/reports', ctrl.getSalesforceReportsList);

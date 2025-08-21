@@ -57,16 +57,17 @@ class ConnectionController {
   // Salesforce OAuth endpoints
   async initiateSalesforceLogin(req, res) {
     try {
-      const { username, connectionName } = req.body;
+      // const { username, connectionName } = req.body;
       
-      if (!username) {
-        return res.status(400).json({
-          success: false,
-          message: 'Username is required'
-        });
-      }
+      // if (!username) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: 'Username is required'
+      //   });
+      // }
 
-      const result = await svc.initiateSalesforceLogin(username, connectionName);
+    const sessionKey = req.query.sessionKey || 'default';
+    const result = await this.service.initiateSalesforceLogin(sessionKey);
       res.json(result);
     } catch (error) {
       console.error('Login initiation error:', error);
@@ -79,7 +80,13 @@ class ConnectionController {
 
   async handleSalesforceCallback(req, res) {
     try {
-      const { code, sessionKey, username, connectionName } = req.body;
+      const { code, username, connectionName } = req.query;
+      const sessionKey = req.query.state || 'default';
+
+      console.log("code", code);
+      console.log("sessionKey", sessionKey);
+      console.log("username", username);
+      console.log("connectionName", connectionName);
       
       if (!code) {
         return res.status(400).json({
