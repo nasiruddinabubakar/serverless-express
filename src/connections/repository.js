@@ -1,5 +1,5 @@
 const BaseRepository = require("../shared/repositories/BaseRepository");
-const { Connection } = require("../shared/db/models/index");
+const { Connection, ConnectionReport } = require("../shared/db/models/index");
 
 class ConnectionRepository {
     constructor() {
@@ -51,6 +51,17 @@ class ConnectionRepository {
             { is_active: false },
             { where: { id: connectionId } }
         );
+    }
+
+    async createSalesforceReport(connectionId, reportData) {
+        console.log("reportData", reportData);
+          return  await ConnectionReport.create({
+                connection_id: connectionId,
+                report_id: reportData.report_id,
+                report_name: reportData.report_name
+            });
+        
+       
     }
 }
 
