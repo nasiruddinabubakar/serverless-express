@@ -23,6 +23,7 @@ class IntegrationService {
     const { codeVerifier, codeChallenge } = this.generatePKCE();
     const clientId = process.env.SALESFORCE_CLIENT_ID;
     const redirectUri = process.env.SALESFORCE_REDIRECT_URI;
+    console.log("clientId", clientId);
     const authBaseUrl = 'https://login.salesforce.com';
 
     const authUrl = `${authBaseUrl}/services/oauth2/authorize` +
@@ -34,7 +35,7 @@ class IntegrationService {
     return { authUrl, codeVerifier };
   }
 
-  async handleSalesforceCallback(code, codeVerifier, username, connectionName) {
+  async handleSalesforceCallback(code) {
     try {
       const authBaseUrl = 'https://login.salesforce.com';
       const clientId = process.env.SALESFORCE_CLIENT_ID;
@@ -73,8 +74,8 @@ class IntegrationService {
 
       const connectionData = {
         type: 'salesforce',
-        name: connectionName || 'Salesforce Connection',
-        username,
+        name: 'Salesforce Connection',
+        username:userInfo.username,
         organization_name: userInfo.organization_name,
         organization_id: userInfo.organization_id,
         instance_url: result.instance_url,
@@ -93,7 +94,7 @@ class IntegrationService {
       // Check if connection already exists
       let connection = await Connection.findOne({
         where: {
-          username,
+          username:userInfo.username,
           type: 'salesforce',
           organization_id: userInfo.organization_id
         }

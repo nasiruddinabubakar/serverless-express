@@ -10,10 +10,6 @@ provider:
   memorySize: 256
   environment:
     STAGE: ${env:STAGE, 'dev'}
-  httpApi:
-    cors: true
-    binaryMediaTypes:
-      - '*/*'
 
 plugins:
   - serverless-offline
@@ -42,6 +38,29 @@ functions:
       - httpApi:
           method: ANY
           path: /connections/{id}
+      - httpApi:
+          method: GET
+          path: /connections/salesforce/initiate-login
+      - httpApi:
+          method: GET
+          path: /connections/salesforce/callback
+      - httpApi:
+          method: POST
+          path: /connections/salesforce/callback-nextjs
+      - httpApi:
+          method: GET
+          path: /connections/{id}/salesforce/status
+      - httpApi:
+          method: GET
+          path: /connections/{id}/salesforce/reports
+      - httpApi:
+          method: GET
+          path: /connections/{id}/salesforce/reports/{reportId}
+      - httpApi:
+          method: GET
+          path: /connections/{id}/salesforce/reports/{reportId}/metadata
+
+
   dataTables:
     handler: src/data-tables/handler.handler
     events:

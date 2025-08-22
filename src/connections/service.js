@@ -8,12 +8,13 @@ class ConnectionService extends GenericService {
     }
 
     // Salesforce OAuth methods
-    async initiateSalesforceLogin(username, connectionName) {
+    async initiateSalesforceLogin(sessionKey) {
         try {
             const authData = IntegrationService.getSalesforceAuthUrl();
             
             // Store code verifier with a unique key
-            const sessionKey = `${username}_${Date.now()}`;
+            // const sessionKey = `${}_${Date.now()}`;
+            console.log("sessionKey***", sessionKey);
             IntegrationService.storeCodeVerifier(sessionKey, authData.codeVerifier);
             
             return {
@@ -35,12 +36,12 @@ class ConnectionService extends GenericService {
             }
 
             // Retrieve code verifier
-            const codeVerifier = IntegrationService.getCodeVerifier(sessionKey);
-            if (!codeVerifier) {
-                throw new Error('Code verifier not found. Please restart the OAuth flow.');
-            }
+            // const codeVerifier = IntegrationService.getCodeVerifier(sessionKey);
+            // if (!codeVerifier) {
+            //     throw new Error('Code verifier not found. Please restart the OAuth flow.');
+            // }
 
-            const result = await IntegrationService.handleSalesforceCallback(code, codeVerifier, username, connectionName);
+            const result = await IntegrationService.handleSalesforceCallback(code, username, connectionName);
             
             // Clean up code verifier
             IntegrationService.removeCodeVerifier(sessionKey);
@@ -52,7 +53,7 @@ class ConnectionService extends GenericService {
         }
     }
 
-    async handleSalesforceCallbackFromNextJS(code, redirectUrl, sessionKey, username, connectionName) {
+    async handleSalesforceCallbackFromNextJS(code, redirectUrl, sessionKey, ) {
         try {
             if (!code) {
                 throw new Error('Authorization code is required');
@@ -66,7 +67,7 @@ class ConnectionService extends GenericService {
             const key = sessionKey || 'default';
             const codeVerifier = IntegrationService.getCodeVerifier(key);
 
-            const result = await IntegrationService.handleSalesforceCallback(code, codeVerifier, username, connectionName);
+            const result = await IntegrationService.handleSalesforceCallback(code);
             
             // Clean up code verifier
             IntegrationService.removeCodeVerifier(key);
