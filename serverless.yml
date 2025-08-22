@@ -51,10 +51,10 @@ functions:
           method: GET
           path: /connections/{id}/salesforce/status
       - httpApi:
-          method: GET
+          method: ANY
           path: /connections/{id}/salesforce/reports
       - httpApi:
-          method: GET
+          method: ANY
           path: /connections/{id}/salesforce/reports/{reportId}
       - httpApi:
           method: GET

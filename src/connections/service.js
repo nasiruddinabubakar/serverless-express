@@ -1,10 +1,12 @@
 const GenericService = require("../shared/services/GenericService");
 const IntegrationService = require("../shared/services/IntegrationService");
 const { Connection } = require("../shared/db/models/index");
+const connectionRepository = require("./repository");
 
 class ConnectionService extends GenericService {
     constructor() {
         super(Connection);
+        this.repository = new connectionRepository();
     }
 
     // Salesforce OAuth methods
@@ -146,6 +148,10 @@ class ConnectionService extends GenericService {
             reportId,
             metadata: result.metadata
         };
+    }
+
+    async createSalesforceReport(connectionId, reportData) {
+        return await this.repository.createSalesforceReport(connectionId, reportData);
     }
 }
 

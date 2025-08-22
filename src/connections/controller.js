@@ -189,6 +189,7 @@ class ConnectionController {
   }
 
   async getSalesforceReportsList(req, res) {
+    console.log("getSalesforceReportsList");
     try {
       const { connectionId } = req.params;
       
@@ -238,6 +239,30 @@ class ConnectionController {
       });
     }
   }
+
+  async createSalesforceReport(req, res) {
+    console.log("req.body", req.body);
+    try {
+      const { connectionId} = req.params;
+      
+      if (!connectionId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Connection ID is required'
+        });
+      }
+
+      const result = await this.service.createSalesforceReport(connectionId, req.body);
+      res.json(result);
+    } catch (error) {
+      console.error('Create report error:', error);
+      res.status(500).json({
+        success: false,
+        message: error.message || 'Failed to create report'
+      });
+    }
+  }
+  
 };
 
 module.exports = new ConnectionController();

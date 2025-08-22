@@ -20,7 +20,10 @@ router.get('/:connectionId/salesforce/status', ctrl.checkConnectionStatus);
 
 // Salesforce report endpoints
 router.get('/:connectionId/salesforce/reports', ctrl.getSalesforceReportsList);
+router.post('/:connectionId/salesforce/reports', ctrl.createSalesforceReport);
 router.get('/:connectionId/salesforce/reports/:reportId', ctrl.fetchSalesforceReport);
 router.get('/:connectionId/salesforce/reports/:reportId/metadata', ctrl.getSalesforceReportMetadata);
+
+
 
 module.exports = router;
