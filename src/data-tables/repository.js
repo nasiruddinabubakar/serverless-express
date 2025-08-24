@@ -103,6 +103,8 @@ class CustomDataRepository{
 
   async getRowsByCustomDataId(customDataId) {
     // Get all rows for the custom data type
+
+    const customData = await CustomData.findByPk(customDataId);
     const rows = await CustomDataRow.findAll({
       where: { custom_data_id: customDataId },
       order: [['created_at', 'ASC']]
@@ -113,6 +115,8 @@ class CustomDataRepository{
       where: { custom_data_id: customDataId },
       attributes: ['id', 'name', 'field_type', 'is_required', 'key_field', 'filter']
     });
+
+
 
     // Create a map of field ID to field info
     const fieldMap = {};
@@ -153,7 +157,8 @@ class CustomDataRepository{
     });
 
     return {
-      custom_data_id: customDataId,
+      custom_data_id: customData.id,
+      name: customData.name,
       total_rows: transformedRows.length,
       fields: fields.map(field => ({
         id: field.id,

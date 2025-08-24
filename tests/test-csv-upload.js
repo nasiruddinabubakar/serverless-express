@@ -68,7 +68,7 @@ async function uploadCsvData(customDataId, csvContent, filename) {
       contentType: 'text/csv'
     });
 
-    const response = await axios.post(`${BASE_URL}${API_ENDPOINT}/${customDataId}/upload-csv`, form, {
+    const response = await axios.post(`${BASE_URL}${API_ENDPOINT}/upload-csv/${customDataId}`, form, {
       headers: {
         ...form.getHeaders(),
         'Accept': 'application/json'
