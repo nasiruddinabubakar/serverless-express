@@ -3,7 +3,10 @@ const db = require('../db/database');
 class BaseRepository {
   constructor(table) { this.table = table; }
   async insert(item) { return this.table.create(item); }
-  async get(id) { return this.table.findByPk(id); }
+  async get(id) {
+     const associations = Object.values(this.table.associations);
+    console.log("Table:", this.table.name, "Associations:", associations);
+    return this.table.findByPk(id, { include: associations }); }
   async list() { 
     const associations = Object.values(this.table.associations);
     console.log("Table:", this.table.name, "Associations:", associations);
